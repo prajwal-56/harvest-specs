@@ -11,13 +11,17 @@ except ImportError:
     from duckduckgo_search import DDGS
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
+
+# Load API key from .env file if it exists
+load_dotenv()
 
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 GEMINI_API_KEY  = os.environ.get("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
 MODEL           = "gemini-3.1-flash-lite"  # 3.1 Flash Lite has a 500 RPD limit, perfect for this task
 INPUT_FILE      = "rawScrap.csv"
 OUTPUT_FILE     = "laptops_research.csv"
-DELAY_SECONDS   = 10  # 10s delay to be safe on standard free tier quota
+DELAY_SECONDS   = 4  
 
 # ─── PROMPT ──────────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """You are a laptop hardware expert. 
