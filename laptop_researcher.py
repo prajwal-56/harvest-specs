@@ -13,15 +13,15 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
-# Load API key from .env file if it exists
-load_dotenv()
+# Load API key from .env file and FORCE override any existing shell variables
+load_dotenv(override=True)
 
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 GEMINI_API_KEY  = os.environ.get("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
 MODEL           = "gemini-3.1-flash-lite"  # This model has 500 RPD left in your AI Studio!
 INPUT_FILE      = "rawScrap.csv"
 OUTPUT_FILE     = "laptops_research.csv"
-DELAY_SECONDS   = 2  
+DELAY_SECONDS   = 4
 
 # ─── PROMPT ──────────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """You are a laptop hardware expert. 
@@ -124,6 +124,11 @@ def main():
         if "_input_name" in done_df.columns:
             done_names = set(done_df["_input_name"].tolist())
 
+    if not GEMINI_API_KEY or GEMINI_API_KEY == "YOUR_API_KEY_HERE":
+        print("❌ Error: GEMINI_API_KEY not found. Please set it in your .env file.")
+        return
+
+    print(f"📡 Using API Key ending in: ...{GEMINI_API_KEY[-4:]}")
     client = genai.Client(api_key=GEMINI_API_KEY)
     
     start_time = time.time()
