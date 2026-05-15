@@ -18,10 +18,10 @@ load_dotenv()
 
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 GEMINI_API_KEY  = os.environ.get("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
-MODEL           = "gemini-3.1-flash-lite"  # 3.1 Flash Lite has a 500 RPD limit, perfect for this task
+MODEL           = "gemini-3.1-flash-lite"  # This model has 500 RPD left in your AI Studio!
 INPUT_FILE      = "rawScrap.csv"
 OUTPUT_FILE     = "laptops_research.csv"
-DELAY_SECONDS   = 4  
+DELAY_SECONDS   = 2  
 
 # ─── PROMPT ──────────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """You are a laptop hardware expert. 
@@ -98,12 +98,12 @@ def process_laptop(client, laptop_name, cashify_price):
             return data
 
         except Exception as e:
-            err_str = str(e)
-            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                print(f"  ⏳  Rate limit hit. Waiting 60 seconds before retrying...")
+            err_str = str(e).lower()
+            if "429" in err_str or "resource_exhausted" in err_str:
+                print(f"  ⏳  Rate limit hit (429). Waiting 60 seconds before retrying...")
                 time.sleep(60)
-            elif "503" in err_str or "UNAVAILABLE" in err_str:
-                print(f"  ⏳  Service unavailable. Waiting 30 seconds before retrying...")
+            elif "503" in err_str or "unavailable" in err_str or "overloaded" in err_str:
+                print(f"  ⏳  Service unavailable (503/Overloaded). Waiting 30 seconds before retrying...")
                 time.sleep(30)
             else:
                 print(f"  ❌  API Error: {e}")
@@ -126,14 +126,35 @@ def main():
 
     client = genai.Client(api_key=GEMINI_API_KEY)
     
+    start_time = time.time()
+    processed_count = 0
+    total_remaining = len(df) - len(done_names)
+    
     for index, row in df.iterrows():
         name = row['model_name']
         price = row['price']
         
         if name in done_names:
             continue
+            
+        processed_count += 1
+        
+        # Calculate Progress Bar & ETA
+        percent = processed_count / total_remaining if total_remaining > 0 else 1
+        bar_length = 20
+        filled_len = int(bar_length * percent)
+        bar = '█' * filled_len + '░' * (bar_length - filled_len)
+        
+        if processed_count > 1:
+            elapsed = time.time() - start_time
+            avg_time = elapsed / (processed_count - 1)
+            eta_seconds = avg_time * (total_remaining - processed_count + 1)
+            eta_str = time.strftime('%H:%M:%S', time.gmtime(eta_seconds))
+        else:
+            eta_str = "Calculating..."
 
-        print(f"[{index + 1}/{len(df)}]")
+        print(f"\n{'='*55}")
+        print(f"[{index + 1}/{len(df)}] [{bar}] {int(percent * 100)}% | ⏳ ETA: {eta_str}")
         result = process_laptop(client, name, price)
         
         # Append to CSV immediately so progress is saved
