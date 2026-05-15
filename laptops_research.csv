@@ -1,9 +1,6 @@
 name,brand,release_year,cpu_model,cores,threads,ram_gb,ram_upgradable,ram_slots,storage_gb,storage_type,display_inches,display_resolution,windows_11_support,typical_new_price_inr,repairability_notes,_input_name,cashify_price,_status
 Dell Latitude 5420,Dell,2021.0,Intel Core i7-1185G7,4.0,8.0,16.0,True,2.0,512.0,SSD,14.0,1920x1080,True,,"Highly repairable with easily accessible RAM slots, M.2 SSD, and battery.",Dell Latitude 5000 Series 5420 (Intel Core i7 11th Gen 14 Inch),₹36299,ok
 Dell Latitude 7420,Dell,2021.0,Intel Core i7-1185G7,4.0,8.0,,False,0.0,,SSD,14.0,1920x1080,True,,RAM is soldered to the motherboard and not upgradable; M.2 SSD is replaceable.,Dell Latitude 7000 Series 7420 (Intel Core i7 11th Gen 14 Inch),₹38099,ok
-Dell Latitude 3000 Series 3420 (Intel Core i7 11th Gen 14 Inch),
-Dell Latitude 3000 Series 3410 (Intel Core i5 10th Gen 14 Inch),
-Dell Latitude 3000 Series 3420 (Intel Core i7 11th Gen 14 Inch),
 Dell Latitude 3420,Dell,,Intel Core i7-1165G7,4.0,8.0,,True,,,SSD,14.0,,True,,Standard business laptop design with accessible internal components for upgrades.,Dell Latitude 3000 Series 3420 (Intel Core i7 11th Gen 14 Inch),₹34299,ok
 Dell Latitude 3410,Dell,2020.0,Intel Core i5-10210U,4.0,,8.0,True,,,,14.0,,True,,Mainstream business laptop designed for professional use with accessible components.,Dell Latitude 3000 Series 3410 (Intel Core i5 10th Gen 14 Inch),₹25199,ok
 Dell Latitude 5410,Dell,,Intel Core i7-10610U,,,,True,,,SSD,14.0,,True,,Latitude 5000 series generally features modular components and accessible RAM slots.,Dell Latitude 5000 Series 5410 (Intel Core i7 10th Gen 14 Inch),₹33999,ok

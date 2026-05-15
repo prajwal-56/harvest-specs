@@ -131,9 +131,19 @@ def main():
     print(f"📡 Using API Key ending in: ...{GEMINI_API_KEY[-4:]}")
     client = genai.Client(api_key=GEMINI_API_KEY)
     
+    print(f"📊 Total in source: {len(df)}")
+    print(f"✅ Already done:   {len(done_names)}")
+    
+    todo_df = df[~df['model_name'].isin(done_names)]
+    print(f"🚀 Laptops to go:  {len(todo_df)}")
+    
+    if len(todo_df) == 0:
+        print("✨ Everything is already complete! Nothing to do.")
+        return
+
+    total_remaining = len(todo_df)
     start_time = time.time()
     processed_count = 0
-    total_remaining = len(df) - len(done_names)
     
     for index, row in df.iterrows():
         name = row['model_name']
