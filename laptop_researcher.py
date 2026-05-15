@@ -139,12 +139,7 @@ def main():
             
         processed_count += 1
         
-        # Calculate Progress Bar & ETA
-        percent = processed_count / total_remaining if total_remaining > 0 else 1
-        bar_length = 20
-        filled_len = int(bar_length * percent)
-        bar = '█' * filled_len + '░' * (bar_length - filled_len)
-        
+        # Calculate ETA
         if processed_count > 1:
             elapsed = time.time() - start_time
             avg_time = elapsed / (processed_count - 1)
@@ -153,8 +148,7 @@ def main():
         else:
             eta_str = "Calculating..."
 
-        print(f"\n{'='*55}")
-        print(f"[{index + 1}/{len(df)}] [{bar}] {int(percent * 100)}% | ⏳ ETA: {eta_str}")
+        print(f"[{index + 1}/{len(df)}] ⏳ ETA: {eta_str}")
         result = process_laptop(client, name, price)
         
         # Append to CSV immediately so progress is saved
